@@ -144,16 +144,23 @@ def file_processing(folder: Path):
         handle_folder(folder)
 
 
-if __name__ == '__main__':
 
-    if sys.argv[1]:
-        print(sys.argv[1])
-        folder_for_scan = Path(sys.argv[1])
-       
+def input_dir():
+    try:
+        input_folder = sys.argv[1]
+    except IndexError:
+        print('Enter valid path to folder')
+    else:
+        folder_for_scan = Path(input_folder)
         print(f'Start in folder {folder_for_scan.resolve()}') #Make the path absolute, resolving any symlinks. 
         scan_folder(folder_for_scan.resolve())
         file_processing(folder_for_scan.resolve())
 
+
+
+if __name__ == '__main__':
+
+    input_dir()
 
 
 
