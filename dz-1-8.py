@@ -27,71 +27,73 @@ users = [
     {"name": "Pol", "birsday": datetime.date(1996, 11, 15)},
     {"name": "Dariya", "birsday": datetime.date(1950, 11, 16)}
 ]
-def list_to_string(list_day):
-        string = ', '.join(list_day)
-        return string
 
-def get_birthdays_per_week(users):
-    week = datetime.timedelta(days=7)
-    current_date = datetime.date.today() 
-    
-    current_year = current_date.year
-    current_weekday = datetime.date.weekday(current_date) 
-    users_current_year = []
-    list_mon = []
-    list_tue = []
-    list_wed = []
-    list_thu = []
-    list_fri = []
-    week_birthday_list = [] 
-
-    week_after_today = current_date + week
-    for diction in users:
-        value = diction['birsday'].replace(year=current_year)
-        diction['birsday'] = value
-        users_current_year.append(diction)
-    
-    for diction in users_current_year:
-        value = diction['birsday']
-        week_day = value.weekday()
-
-
-        if week_day == 5 and (value >= (current_date - datetime.timedelta(days=2))    and value < week_after_today):
-            value = value + datetime.timedelta(days=2) 
-            week_day = value.weekday()
-            
-        elif week_day == 6 and (value >= (current_date - datetime.timedelta(days=1))    and value < week_after_today):
-            value = value + datetime.timedelta(days=1) 
-            week_day = value.weekday()
-
-        if week_day == 0 and (value >= current_date    and value < week_after_today):
-            list_mon.append(diction['name'])
-            
-        elif week_day == 1 and (value >= current_date    and value < week_after_today):
-            list_tue.append(diction['name'])
-           
-        elif week_day == 2 and (value >= current_date    and value < week_after_today):
-            list_wed.append(diction['name'])
-            
-        elif week_day == 3 and (value >= current_date    and value < week_after_today):
-            list_thu.append(diction['name'])
-          
-        elif week_day == 4 and (value >= current_date    and value < week_after_today):
-            list_fri.append(diction['name'])
-          
-   
-
-    week_birthday_list = [list_to_string(list_mon), list_to_string(list_tue), list_to_string(list_wed), list_to_string(list_thu), list_to_string(list_fri)]
+def print_from_dict(current_weekday, week_birthday):
+    name_list = []
     week_days = {0: 'Monday', 1: 'Tuesday', 2: 'Wednessday', 3: 'Thursday', 4: 'Friday'}
 
     for i in range(5):
-        if current_weekday > 4:
-           current_weekday = current_weekday - 5
-      
-        print(f'{week_days[current_weekday]} : {week_birthday_list[current_weekday]}')
-        current_weekday = current_weekday + 1
-        
 
+        if current_weekday in (5,6):
+           current_weekday = 0
+
+        name_list = week_birthday[current_weekday]
+        string = ', '.join(name_list)
+        
+        print(f'{week_days[current_weekday]} : {string}')
+        current_weekday = current_weekday + 1
+                    
+       
+    return 
+
+def get_birthdays_per_week(users):
+   
+    users_week_birthday = []
+    
+    week_congratulated = {0: [], 1: [], 2: [], 3: [], 4: []}
+
+    
+    current_date = datetime.date.today()
+    current_year = current_date.year
+    current_weekday = datetime.date.weekday(current_date) 
+    
+# for monday we have to include 2 dey before - saturday, sunday, other days - (today + week)
+    if current_weekday == 0:
+        first_day_interval = current_date - datetime.timedelta(days=2)
+    else:
+        first_day_interval = current_date   
+    last_day_interval = first_day_interval + datetime.timedelta(days=7)
+
+    
+#  new list of dict with new value of year    
+    for dictionary in users:
+        current_birthday = dictionary['birsday'].replace(year=current_year)
+        
+        if current_birthday >= first_day_interval and current_birthday < last_day_interval:
+            dict_curr_year = dictionary.copy()
+            dict_curr_year['birsday'] = dict_curr_year['birsday'].replace(year=current_year)
+            users_week_birthday.append(dict_curr_year)
+    
+        
+        
+    for user in users_week_birthday:
+        value = user['birsday']
+        week_day = value.weekday()
+        name = user['name']
+        
+        if week_day in (5,6):
+            week_day = 0
+        
+        if week_day in week_congratulated.keys():
+            week_congratulated[week_day].append(name)
+        
+  
+    print_from_dict(current_weekday, week_congratulated)   
+        
+        
+        
+    
+# get_birthdays_per_week(users)
 
 
    
