@@ -6,7 +6,7 @@ def input_error(func):
         except KeyError:
             return 'This contact doesnt exist, please try again.'
         except ValueError as exception:
-            return f'Not enough input args, must be two paremeters: name and phone : "{exception.args[0]}"'
+            return exception.args[0]
         except IndexError:
             return 'This contact cannot be added, it already exists.'
         except TypeError:
@@ -46,7 +46,7 @@ def phone_from_name(args):
 
 def  show_all():
     result = ''
-    if TEL_BOOK ==  {}:
+    if not TEL_BOOK:
         result = f'There are no contacts in the book.'
         return result
 
