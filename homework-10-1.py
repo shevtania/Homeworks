@@ -42,22 +42,3 @@ class AdressBook(UserDict):
         self.data[record.name.value] = record
         return f'Contact {record.name.value} added'
 
-
-
-name = Name('Y')
-phone_1 = Phone("09583787827")
-phone_2 = Phone('9760293139')
-phone_3 = Phone('0667069948')
-record = Record(name, phone_1)
-ad_book = AdressBook()
-print(record.add_phone(phone_1))
-print(record.add_phone(phone_2))
-#print(record.name.name)
-
-print(record.name.value, record.phone_list)
-print(record.change_phone(phone_1, phone_3))
-print(record.name.value, record.phone_list)
-print(record.del_phone(phone_2))
-print(record.name.value, record.phone_list)
-print(ad_book.add_record(record))
-print(ad_book)
